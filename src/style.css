@@ -34,7 +34,6 @@ a:hover {
 }
 
 .bottom-contents{
-    margin-left: 30em;
     border-color: white;
 }
 
@@ -53,6 +52,7 @@ a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 0 auto;
 }
 
 .drag-area.active{
