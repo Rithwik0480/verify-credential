@@ -13,7 +13,7 @@ function App() {
     const credential = credentialRef.current.value
     // const credential = fileData
     // credentialRef.current.value= null
-    
+
     try{
       let vcCheck ={
         "vc": JSON.parse(credential)
@@ -54,7 +54,7 @@ function App() {
       })
   }
   catch(error){
-      // swal("Please make sure that you enter the VC in the correct format");
+      // swal("Please make sure that you enter the VC in the correct format")
   }
     }
 
@@ -79,6 +79,8 @@ function App() {
               </div>
               <div className='drag-area'>
                 <p className='drop-header'>Drag & Drop JSON</p>
+                <input type="file" id='input-file' hidden/>
+                <button className='btn btn-light' id='upload-btn'>Upload</button>
               </div>
           </div>
       </div>  

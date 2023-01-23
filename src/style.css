@@ -44,13 +44,13 @@ a:hover {
     opacity: 2%;
 }
 .drag-area{
-    width: 54em;
+    width: 56em;
     height: 18em;
     border: 1px solid white;
     border-radius: 1em;
     background-color: rgba(255, 255, 255, 0.1);
     color: white;
-    display: flex;
+    display: grid;
     align-items: center;
     justify-content: center;
 }
@@ -58,10 +58,7 @@ a:hover {
 .drag-area.active{
     border: 3px solid #7eec98;
 }
-  
-.drag-header{
-justify-content: center;
-}
+
 .card{
     background-color: transparent;
 }
