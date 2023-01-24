@@ -1,7 +1,7 @@
 import swal from 'sweetalert';
 import { handleVerify } from './App';
-window.addEventListener('DOMContentLoaded', (event) => {
 
+window.addEventListener('DOMContentLoaded', (event) => {
 
 const dragArea = document.querySelector('.drag-area')
 const dragText = document.querySelector('.drop-header')
@@ -14,6 +14,7 @@ dragArea.addEventListener('paste', (event) => {
     let paste = (event.clipboardData || window.clipboardData).getData('text')
     let formatted = JSON.stringify(JSON.parse(paste), null, 4)            
     let pTag = `"${formatted}"`
+    handleVerify(formatted)
     dragText.textContent = pTag
     dragArea.style.removeProperty("display")
 
@@ -65,6 +66,4 @@ function readFile() {
               icon:'warning'})
     }
 }
-
-    console.log('DOM fully loaded and parsed')
 });

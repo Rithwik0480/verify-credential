@@ -8,8 +8,6 @@ export function handleVerify(data) {
   
   const url = "https://agent.demo.dhiway.com/api/v1/verify"
   const credential = data
-  // const credential = fileData
-  // credentialRef.current.value= null
 
   try{
     let vcCheck ={
@@ -38,14 +36,14 @@ export function handleVerify(data) {
                 title: "Verified!",
                 text: "This credential has been verified",
                 icon: "success",
-            });
+            })
         }
         else{
             swal({
                 title: "Not verified!",
                 text: "This credential has not been verified",
                 icon: "error",
-            });
+            })
         }
 
     })
@@ -55,10 +53,7 @@ catch(error){
 }
   }
 function App() {
-  const credentialRef = useRef()
 
-
-  
   return (
     <div className='f-screen'>
       <div>
@@ -75,8 +70,7 @@ function App() {
           </div>
       </div>  
     </div>
-     );
-  
+     ) 
 }
 
 export default App;
