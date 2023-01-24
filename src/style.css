@@ -50,15 +50,14 @@ a:hover {
     border-radius: 1em;
     background-color: rgba(255, 255, 255, 0.1);
     color: white;
-    display: grid;
     align-items: center;
     justify-content: center;
+    overflow: auto;
+    word-wrap: break-word; 
 }
 
 .drag-area.active{
     border: 3px solid #7eec98;
 }
 
-.card{
-    background-color: transparent;
-}
+/* let pTag = `<p class="drop-para" contentEditable="false">"${paste}"</p>` */

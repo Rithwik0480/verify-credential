@@ -1,66 +1,70 @@
-// import app from './App'
-// import swal from 'sweetalert';
-
-// const dragArea = document.querySelector('.drag-area')
-// const dragText = document.querySelector('.drop-header')
-
-// let button = document.querySelector('#upload-btn')
-// let input = document.querySelector('#input-file')
-// let file;
-
-// button.onclick = () => {
-//     input.click();
-// }
-
-// //when a file is uploaded
-// input.addEventListener('change', function() {
-//     file = this.files[0]
-//     dragArea.classList.add('active')
-//     readFile()
-// })
+import swal from 'sweetalert';
+import { handleVerify } from './App';
+window.addEventListener('DOMContentLoaded', (event) => {
 
 
-// // when file is inside drop area
-// dragArea.addEventListener('dragover', (event) => {
-//     event.preventDefault()
-//     dragText.textContent = 'Release to Upload'
-//     dragArea.classList.add('active')
-// })
+const dragArea = document.querySelector('.drag-area')
+const dragText = document.querySelector('.drop-header')
 
-// // when file leaves the drag area
-// dragArea.addEventListener('dragleave', ()=> {
-//     dragText.textContent = 'Drag & Drop JSON'
-//     dragArea.classList.remove('active')
-// })
+let button = document.querySelector('#upload-btn')
+let input = document.querySelector('#input-file')
+let file;
 
-// //when the file is dropped
-// dragArea.addEventListener('drop', (event)=> {
-//     event.preventDefault()
+dragArea.addEventListener('paste', (event) => {
+    let paste = (event.clipboardData || window.clipboardData).getData('text')
+    let formatted = JSON.stringify(JSON.parse(paste), null, 4)            
+    let pTag = `"${formatted}"`
+    dragText.textContent = pTag
+    dragArea.style.removeProperty("display")
 
-//     file = event.dataTransfer.files[0]
-//     readFile()
-// })
+})
+// when file is inside drop area
+dragArea.addEventListener('dragover', (event) => {
+    event.preventDefault()
+    dragText.textContent = 'Release to Upload'
+    dragArea.classList.add('active')
+})
 
-// function readFile() {
-//     let fileType = file.type
+// when file leaves the drag area
+dragArea.addEventListener('dragleave', ()=> {
+    dragText.textContent = 'Drag & Drop JSON'
+    dragArea.classList.remove('active')
+})
 
-//     let validExtention = ['application/json']
+//when the file is dropped
+dragArea.addEventListener('drop', (event)=> {
+    event.preventDefault()
+    file = event.dataTransfer.files[0]
+    readFile()
+})
 
-//     if(validExtention.includes(fileType)){
-//         dragText.textContent = file.name
-//         let fileReader = new FileReader()
+function readFile() {
+    let fileType = file.type
 
-//         fileReader.onload = () => {
-//             let fileData = fileReader.result
-//             console.log(fileData)
-//             app.handleVerify(fileData)
-//         }
-//         fileReader.readAsText(file)
-//     }else {
-//         dragText.textContent = 'Drag & Drop JSON'
-//         dragArea.classList.remove('active')
-//         swal({title:'The file is not a JSON',
-//               text: 'Make sure the file has a ".json" extention.',
-//               icon:'warning'})
-//     }
-// }
+    let validExtention = ['application/json']
+
+    if(validExtention.includes(fileType)){
+        let fileReader = new FileReader()
+
+        fileReader.onload = () => {
+            let fileData = fileReader.result
+            handleVerify(fileData)
+            let formatted = JSON.stringify(JSON.parse(fileData), null, 4)            
+            let pTag = `"${formatted}"`
+            dragText.textContent = pTag
+
+            dragArea.style.removeProperty("display")
+            app.handleVerify(fileData)
+        }
+        fileReader.readAsText(file)
+    }else {
+        dragText.textContent = 'Drag & Drop JSON'
+        dragArea.classList.remove('active')
+        swal({title:'The file is not a JSON',
+              text: 'Make sure the file has a ".json" extention.',
+              icon:'warning'})
+    }
+}
+
+    console.log('DOM fully loaded and parsed')
+});
