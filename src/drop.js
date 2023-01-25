@@ -1,5 +1,5 @@
-import swal from 'sweetalert'
-import { handleVerify } from './App'
+// import swal from 'sweetalert'
+// import { handleVerify } from './App'
 
 
 

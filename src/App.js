@@ -59,6 +59,7 @@ useEffect(()=> {
 const dragArea = document.querySelector('.drag-area')
 const dragText = document.querySelector('.drop-header')
 const copyText = document.querySelector('.copy')
+const bin      = document.querySelector('.bin')
 
 let button = document.querySelector('#upload-btn')
 let input = document.querySelector('#input-file')
@@ -71,7 +72,6 @@ dragArea.addEventListener('paste', (event) => {
     let pTag = `"${formatted}"`
     handleVerify(formatted)
     dragText.textContent = pTag
-    dragArea.style.removeProperty("display")
 
 })
 // file is inside drop area
@@ -96,20 +96,25 @@ dragArea.addEventListener('drop', (event)=> {
 
 // file is copied
 copyText.addEventListener("click", function() {
-    var dragArea = document.querySelector(".drag-area")
-    var range = document.createRange()
+    let dragArea = document.querySelector(".drag-area")
+    let range = document.createRange()
     range.selectNode(dragArea)
     window.getSelection().addRange(range)
     document.execCommand("copy")
     window.getSelection().removeAllRanges()
     
-    copyText.className="fa-solid fa-copy copy"
+    copyText.className="fa-solid fa-copy icons"
     setTimeout(function() {
-        copyText.className="fa-regular fa-copy copy"
+        copyText.className="fa-regular fa-copy icons"
         }, 1000)
-
   })
-  
+ 
+// file is deleted
+bin.addEventListener("click", function() {
+  let dragArea = document.querySelector(".drag-area")
+  dragArea.textContent=null
+  dragArea.classList.remove('active')
+})
 
 
 function readFile() {
@@ -148,24 +153,24 @@ function readFile() {
       <a href='https://dhiway.com/markstudio/' className='links p-3'>About #Mark Studio</a>
       </div>
       <div>
-        <div>
-          <h1 className='heading'>Verify Credential</h1>
+        <div className='vc-img col-md-12'>
+          <img className='heading' src='vc.svg'></img>
+          {/* <h1 className='heading'>Verify Credential</h1> */}
         </div>
-        <div className='bottom-contents'>
- 
-          <div className='drag-area' style={{display:'flex'}} contentEditable='true'>
-            <div className='position-absolute right-0'>
-            <div className="copy-icon">
-              <div>
-              <i class="fa-regular fa-copy copy" style={{fontSize:"20px"}} title="copy"></i>
+        <div className='bottom-contents'> 
+          <div className='outer-area'>
+            <div className='col-md-12 d-flex'>
+              <div className='col-md-8'>
+                <p className='outer-text pe-none'>Drag & Drop JSON</p>
               </div>
-              <div>
-              <i class="fa-regular fa-trash-can"></i>
+              <div className='col-md-4'>
+                <i className="fa-regular fa-copy copy icons" title="copy"></i>
+                <i class="fa-regular fa-trash-can bin icons"></i>
               </div>
-          </div>
+               </div>          
+              <div className='drag-area' contentEditable='true'> 
+              <p className='drop-header' contentEditable="false"></p>  
             </div>
-          
-           <p className='drop-header' readOnly>Drag & Drop JSON</p>  
           </div>
         </div>
       </div>  
