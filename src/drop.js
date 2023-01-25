@@ -75,7 +75,7 @@ function readFile() {
             dragText.textContent = pTag
 
             dragArea.style.removeProperty("display")
-            app.handleVerify(fileData)
+            handleVerify(fileData)
         }
         fileReader.readAsText(file)
     }else {

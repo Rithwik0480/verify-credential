@@ -58,20 +58,23 @@ function App() {
   return (
     <div className='f-screen'>
       <div>
-      <img className='p-3' src='https://cdn-clebp.nitrocdn.com/cWNDIHLSkFLqhtZapRjEKdXMJezUGxxk/assets/static/optimized/rev-cd5f479/wp-content/uploads/2020/10/cropped-horizontal-140x46.png' />
+      <img className='p-3' src='Group 6685.svg' />
       <a href='https://cord.network/' className='links p-3'>About CORD</a>
       <a href='https://dhiway.com/markstudio/' className='links p-3'>About #Mark Studio</a>
       </div>
       <div>
-        <h1 className='heading'>Verify Credential</h1>
-          <div className='bottom-contents'>
-            <div className="copy-icon">
-            <i class="fa-regular fa-copy copy" style={{fontSize:"20px"}} title="copy"></i>
-            </div>
-            <div className='drag-area' style={{display:'flex'}} contentEditable='true'>
-              <p className='drop-header' contentEditable='false'>Drag & Drop JSON</p>  
-            </div>
+        <div>
+          <h1 className='heading'>Verify Credential</h1>
+        </div>
+        <div className='bottom-contents'>
+ 
+          <div className='drag-area' style={{display:'flex'}} contentEditable='true'>
+          <div className="copy-icon">
+           <i class="fa-regular fa-copy copy" style={{fontSize:"20px"}} title="copy"></i>
           </div>
+           <p className='drop-header' contentEditable='false'>Drag & Drop JSON</p>  
+          </div>
+        </div>
       </div>  
     </div>
      ) 

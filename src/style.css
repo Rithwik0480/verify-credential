@@ -34,7 +34,6 @@ a:hover {
 }
 
 .bottom-contents {
-    margin-left: 30em;
     border-color: white;
 }
 
@@ -54,6 +53,8 @@ a:hover {
     justify-content: center;
     overflow: auto;
     word-wrap: break-word;
+    position: relative;
+    margin: 0 auto;
 }
 
 .drag-area.active {
@@ -62,8 +63,8 @@ a:hover {
 
 .copy-icon {
     position: absolute;
+    top: 11px;
+    right: 14px;
     cursor: pointer;
-    margin-left: 54em;
-    margin-top: 1em;
     color: white;   
 }
