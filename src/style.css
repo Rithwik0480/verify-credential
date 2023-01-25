@@ -42,6 +42,7 @@ a:hover {
     height: 18em;
     opacity: 2%;
 }
+
 .drag-area {
     width: 56em;
     height: 18em;
@@ -62,9 +63,15 @@ a:hover {
 }
 
 .copy-icon {
-    position: absolute;
+    text-align: right;
+    position: sticky;
     top: 11px;
-    right: 14px;
+    margin-right: 12px;
     cursor: pointer;
     color: white;   
+}
+
+.right-0 {
+    right: 0;
+    top: 11px;
 }
