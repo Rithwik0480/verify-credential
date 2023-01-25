@@ -1,9 +1,10 @@
 import React, {useState, useRef} from 'react'
-import 'bootstrap/dist/css/bootstrap.css';
-import swal from 'sweetalert';
+import 'bootstrap/dist/css/bootstrap.css'
+import swal from 'sweetalert'
 import style from './style.css'
 import drop from './drop'
-import { render } from '@testing-library/react';
+import { render } from '@testing-library/react'
+
 export function handleVerify(data) {
   
   const url = "https://agent.demo.dhiway.com/api/v1/verify"
@@ -24,13 +25,13 @@ export function handleVerify(data) {
       .then(function(response){ 
         return response.json()})
     .then(function(data){
-        let count = 0;
+        let count = 0
         if(data.signature.verified === true)
-            count++;
+            count++
         if(data.stream.verified === true)
-            count++;
+            count++
         if(data.digest.verified === true)
-            count++;
+            count++
         if(count === 3){
             swal({
                 title: "Verified!",
@@ -64,13 +65,16 @@ function App() {
       <div>
         <h1 className='heading'>Verify Credential</h1>
           <div className='bottom-contents'>
-              <div className='drag-area' style={{display:'flex'}} contentEditable='true'>
-                <p className='drop-header' contentEditable='false'>Drag & Drop JSON</p>               
-              </div>
+            <div className="copy-icon">
+            <i class="fa-regular fa-copy copy" style={{fontSize:"20px"}} title="copy"></i>
+            </div>
+            <div className='drag-area' style={{display:'flex'}} contentEditable='true'>
+              <p className='drop-header' contentEditable='false'>Drag & Drop JSON</p>  
+            </div>
           </div>
       </div>  
     </div>
      ) 
 }
 
-export default App;
+export default App

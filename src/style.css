@@ -1,6 +1,6 @@
   @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 
-.f-screen{
+.f-screen {
     background-color:#463B6B;
     height: 100vh;
     width:100vw;   
@@ -9,13 +9,13 @@ a:hover {
     color:rgba(255, 255, 255, 0.783)
 }
 
-.links{
+.links {
     color: white;
     text-decoration: none;
     float: right;
 }
 
-.heading{
+.heading {
     padding:2em; 
     color:white;
     text-align: center;
@@ -23,7 +23,7 @@ a:hover {
     font-family: 'Pacifico', cursive;
 }
 
-.input-field{
+.input-field {
 
     height: 3em;
     width: 50em;
@@ -33,17 +33,17 @@ a:hover {
     color: white;
 }
 
-.bottom-contents{
+.bottom-contents {
     margin-left: 30em;
     border-color: white;
 }
 
-.text-input{
+.text-input {
     width: 54em;
     height: 18em;
     opacity: 2%;
 }
-.drag-area{
+.drag-area {
     width: 56em;
     height: 18em;
     border: 1px solid white;
@@ -53,10 +53,17 @@ a:hover {
     align-items: center;
     justify-content: center;
     overflow: auto;
-    word-wrap: break-word; 
+    word-wrap: break-word;
 }
 
-.drag-area.active{
+.drag-area.active {
     border: 3px solid #7eec98;
 }
 
+.copy-icon {
+    position: absolute;
+    cursor: pointer;
+    margin-left: 54em;
+    margin-top: 1em;
+    color: white;   
+}
