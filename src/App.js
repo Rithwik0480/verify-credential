@@ -60,6 +60,7 @@ const dragArea = document.querySelector('.drag-area')
 const dragText = document.querySelector('.drop-header')
 const copyText = document.querySelector('.copy')
 const bin      = document.querySelector('.bin')
+const dragStatus  = document.querySelector('.drag-status')
 
 let button = document.querySelector('#upload-btn')
 let input = document.querySelector('#input-file')
@@ -68,23 +69,29 @@ let file
 //file is pasted
 dragArea.addEventListener('paste', (event) => {
     let paste = (event.clipboardData || window.clipboardData).getData('text')
-    let formatted = JSON.stringify(JSON.parse(paste), null, 4)            
+    let formatted = JSON.stringify(JSON.parse(paste), null, 4)           
+    console.log("formatted",formatted)    
     let pTag = `"${formatted}"`
+    console.log("pTag",pTag)
     handleVerify(formatted)
-    dragText.textContent = pTag
+    dragText.textContent = pTag;
+    bin.style = 'display: block';
+    copyText.style = 'display: block'
 
 })
+if(dragText.textContent==""){
+    bin.style = 'display: none';
+    copyText.style = 'display: none'
+}
 // file is inside drop area
 dragArea.addEventListener('dragover', (event) => {
     event.preventDefault()
-    dragText.textContent = 'Release to Upload'
-    dragArea.classList.add('active')
+    dragStatus.textContent = 'Release to Upload'
 })
 
 // file leaves the drag area
 dragArea.addEventListener('dragleave', ()=> {
-    dragText.textContent = 'Drag & Drop JSON'
-    dragArea.classList.remove('active')
+  dragStatus.textContent = 'Drag & Drop JSON'
 })
 
 // file is dropped
@@ -112,8 +119,11 @@ copyText.addEventListener("click", function() {
 // file is deleted
 bin.addEventListener("click", function() {
   let dragArea = document.querySelector(".drag-area")
-  dragArea.textContent=null
+  // dragArea.textContent=null
+  dragText.textContent  = ""
   dragArea.classList.remove('active')
+  bin.style = 'display: none'
+  copyText.style = 'display: none'
 })
 
 
@@ -131,13 +141,15 @@ function readFile() {
             let formatted = JSON.stringify(JSON.parse(fileData), null, 4)            
             let pTag = `"${formatted}"`
             dragText.textContent = pTag
+            bin.style = 'display: block'
+            copyText.style = 'display: block'
 
             dragArea.style.removeProperty("display")
             handleVerify(fileData)
         }
         fileReader.readAsText(file)
     }else {
-        dragText.textContent = 'Drag & Drop JSON'
+        dragStatus.textContent = 'Drag & Drop JSON'
         dragArea.classList.remove('active')
         swal({title:'The file is not a JSON',
               text: 'Make sure the file has a ".json" extention.',
@@ -160,16 +172,19 @@ function readFile() {
         <div className='bottom-contents'> 
           <div className='outer-area'>
             <div className='col-md-12 d-flex'>
-              <div className='col-md-8'>
-                <p className='outer-text pe-none'>Drag & Drop JSON</p>
+              <div className='col-md-12 position-relative'>
+                <p className='outer-text pe-none'>Copy paste or Drag & drop JSON</p>
+                <div className="action-buttons">
+                  <i className="fa-regular fa-copy copy icons" title="copy"></i>
+                  <i class="fa-regular fa-trash-can bin icons"></i>
+                </div>
               </div>
-              <div className='col-md-4'>
-                <i className="fa-regular fa-copy copy icons" title="copy"></i>
-                <i class="fa-regular fa-trash-can bin icons"></i>
-              </div>
+              
                </div>          
               <div className='drag-area' contentEditable='true'> 
-              <p className='drop-header' contentEditable="false"></p>  
+              <pre className='drop-header' contentEditable="false">
+                <p className="drag-status"></p>
+              </pre>  
             </div>
           </div>
         </div>
