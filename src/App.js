@@ -66,17 +66,30 @@ let button = document.querySelector('#upload-btn')
 let input = document.querySelector('#input-file')
 let file
 
-//file is pasted
+function isJsonString(str) {
+  try {
+      JSON.parse(str);
+  } catch (e) {
+      return false;
+  }
+  return true;
+}
+
 dragArea.addEventListener('paste', (event) => {
     let paste = (event.clipboardData || window.clipboardData).getData('text')
-    let formatted = JSON.stringify(JSON.parse(paste), null, 4)           
-    console.log("formatted",formatted)    
-    let pTag = `"${formatted}"`
-    console.log("pTag",pTag)
-    handleVerify(formatted)
-    dragText.textContent = pTag;
-    bin.style = 'display: block';
-    copyText.style = 'display: block'
+    if(isJsonString(paste)){
+      let formatted = JSON.stringify(JSON.parse(paste), null, 4)             
+      let pTag = `"${formatted}"`
+      handleVerify(formatted)
+      dragText.textContent = pTag;
+      bin.style = 'display: block';
+      copyText.style = 'display: block'
+    }
+    else{
+      alert("Invalid JSON")
+      event.preventDefault()
+    }
+  
 
 })
 if(dragText.textContent==""){
@@ -114,13 +127,15 @@ copyText.addEventListener("click", function() {
     setTimeout(function() {
         copyText.className="fa-regular fa-copy icons"
         }, 1000)
+        var x = document.getElementById("snackbar");
+        x.className = "show";
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
   })
  
 // file is deleted
 bin.addEventListener("click", function() {
-  let dragArea = document.querySelector(".drag-area")
   // dragArea.textContent=null
-  dragText.textContent  = ""
+  dragArea.textContent  = ""
   dragArea.classList.remove('active')
   bin.style = 'display: none'
   copyText.style = 'display: none'
@@ -189,6 +204,7 @@ function readFile() {
           </div>
         </div>
       </div>  
+      <div id="snackbar">Copied to clipboard</div>
     </div>
      ) 
 }
