@@ -2,7 +2,6 @@ import React, {useState, useRef, useEffect} from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import swal from 'sweetalert'
 import style from './style.css'
-import drop from './drop'
 import { render } from '@testing-library/react'
 
 export function handleVerify(data) {
@@ -26,26 +25,37 @@ export function handleVerify(data) {
         return response.json()})
     .then(function(data){
         let count = 0
-        if(data.signature.verified === true)
-            count++
-        if(data.stream.verified === true)
-            count++
-        if(data.digest.verified === true)
-            count++
-        if(count === 3){
-            swal({
-                title: "Verified!",
-                text: "This credential has been verified",
-                icon: "success",
-            })
-        }
+        if(data.signature.verified === true){}
         else{
-            swal({
-                title: "Not verified!",
-                text: "This credential has not been verified",
-                icon: "error",
-            })
+          let sign=document.querySelector(".sign")
+          sign.src="error.svg"
         }
+
+        if(data.stream.verified === true){}
+        else{
+          let stream=document.querySelector(".stream")
+          stream.src="error.svg"
+        }
+        
+        if(data.digest.verified === true){}
+        else{
+          let digest=document.querySelector(".digest")
+          digest.src="error.svg"
+        }
+        // if(count === 3){
+        //     swal({
+        //         title: "Verified!",
+        //         text: "This credential has been verified",
+        //         icon: "success",
+        //     })
+        // }
+        // else{
+        //     swal({
+        //         title: "Not verified!",
+        //         text: "This credential has not been verified",
+        //         icon: "error",
+        //     })
+        // }
 
     })
 }
@@ -57,6 +67,7 @@ function App() {
 useEffect(()=> {
 
 const dragArea = document.querySelector('.drag-area')
+const verifyArea= document.querySelector('.verify-area')
 const dragText = document.querySelector('.drop-header')
 const copyText = document.querySelector('.copy')
 const bin      = document.querySelector('.bin')
@@ -75,6 +86,7 @@ function isJsonString(str) {
   return true;
 }
 
+//file is pasted
 dragArea.addEventListener('paste', (event) => {
     let paste = (event.clipboardData || window.clipboardData).getData('text')
     if(isJsonString(paste)){
@@ -96,22 +108,37 @@ if(dragText.textContent==""){
     bin.style = 'display: none';
     copyText.style = 'display: none'
 }
+
 // file is inside drop area
 dragArea.addEventListener('dragover', (event) => {
     event.preventDefault()
     dragStatus.textContent = 'Release to Upload'
 })
+verifyArea.addEventListener('dragover', (event) => {
+  event.preventDefault()
+  dragStatus.textContent = 'Release to Upload'
+})
 
 // file leaves the drag area
 dragArea.addEventListener('dragleave', ()=> {
-  dragStatus.textContent = 'Drag & Drop JSON'
+  dragStatus.textContent = null
+})
+verifyArea.addEventListener('dragleave', ()=> {
+  dragStatus.textContent = null
 })
 
 // file is dropped
 dragArea.addEventListener('drop', (event)=> {
     event.preventDefault()
     file = event.dataTransfer.files[0]
+    document.getElementById("verification").hidden = false;
     readFile()
+})
+verifyArea.addEventListener('drop', (event)=> {
+  event.preventDefault()
+  file = event.dataTransfer.files[0]
+  readFile()
+  document.getElementById("verification").hidden = false;
 })
 
 // file is copied
@@ -136,7 +163,6 @@ copyText.addEventListener("click", function() {
 bin.addEventListener("click", function() {
   // dragArea.textContent=null
   dragArea.textContent  = ""
-  dragArea.classList.remove('active')
   bin.style = 'display: none'
   copyText.style = 'display: none'
 })
@@ -165,7 +191,7 @@ function readFile() {
         fileReader.readAsText(file)
     }else {
         dragStatus.textContent = 'Drag & Drop JSON'
-        dragArea.classList.remove('active')
+        document.getElementById("verification").hidden = true;
         swal({title:'The file is not a JSON',
               text: 'Make sure the file has a ".json" extention.',
               icon:'warning'})
@@ -194,13 +220,38 @@ function readFile() {
                   <i class="fa-regular fa-trash-can bin icons"></i>
                 </div>
               </div>
-              
-               </div>          
+            </div> 
+
+            <div className='inner-area'>
               <div className='drag-area' contentEditable='true'> 
-              <pre className='drop-header' contentEditable="false">
-                <p className="drag-status"></p>
-              </pre>  
+                <pre className='drop-header' contentEditable='true'>
+                  <p className='drag-status'></p>
+                </pre>  
+              </div>
+              <div className='verify-area' contentEditable='false'>
+              <div id='verification' hidden>
+                <div className='col-md-12 verify-header'>
+                  <img src='verified.svg' className='verify-svg'></img>
+                </div>
+                <br></br>
+                <div className='col-md-12 verify-body'>
+                  <img className='success-svg sign'src='success.svg'></img>
+                  <p>Author Signature</p>
+                </div>
+                <br></br>
+                <div className='col-md-12 verify-body'>
+                  <img className='success-svg stream'src='success.svg'></img>
+                  <p>Stream</p>
+                </div>
+                <br></br>
+                <div className='col-md-12 verify-body'>
+                  <img className='success-svg digest'src='success.svg'></img>
+                  <p>Hash Digest</p>
+                </div>
+              </div>                
+              </div>
             </div>
+
           </div>
         </div>
       </div>  
