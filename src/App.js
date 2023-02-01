@@ -23,24 +23,50 @@ export function handleVerify(data) {
       })
       .then(function(response){ 
         return response.json()})
-    .then(function(data){
+      .then(function(data){
         let count = 0
-        if(data.signature.verified === true){}
+        let sign=document.querySelector(".sign")
+        let stream=document.querySelector(".stream")
+        let digest=document.querySelector(".digest")
+        let verify=document.querySelector(".verify-svg")
+
+        if(data.signature.verified === true){
+          sign.src="success.svg"
+        }
         else{
-          let sign=document.querySelector(".sign")
+          count++
           sign.src="error.svg"
+
+          let txt = document.querySelector(".sign-body")
+          txt.style.color="red"
         }
 
-        if(data.stream.verified === true){}
+        if(data.stream.verified === true){
+          stream.src="success.svg"
+        }
         else{
-          let stream=document.querySelector(".stream")
+          count++
           stream.src="error.svg"
+
+          let txt = document.querySelector(".stream-body")
+          txt.style.color="red"
         }
         
-        if(data.digest.verified === true){}
+        if(data.digest.verified === true){
+          digest.src="success.svg"
+        }
         else{
-          let digest=document.querySelector(".digest")
+          count++
           digest.src="error.svg"
+
+          let txt = document.querySelector(".digest-body")
+          txt.style.color="red"
+        }
+
+        if(count>0){
+          verify.src="err-header.svg"
+        }else {
+          verify.src="verified.svg"
         }
         // if(count === 3){
         //     swal({
@@ -67,15 +93,15 @@ function App() {
 useEffect(()=> {
 
 const dragArea = document.querySelector('.drag-area')
-const verifyArea= document.querySelector('.verify-area')
 const dragText = document.querySelector('.drop-header')
 const copyText = document.querySelector('.copy')
 const bin      = document.querySelector('.bin')
-const dragStatus  = document.querySelector('.drag-status')
-
-let button = document.querySelector('#upload-btn')
-let input = document.querySelector('#input-file')
-let file
+const dragStatus = document.querySelector('.drag-status')
+const verification = document.getElementById("verification")
+const signBody = document.querySelector('.sign-body')
+const streamBody = document.querySelector('.stream-body')
+const digestBody= document.querySelector('.digest-body')
+let file;
 
 function isJsonString(str) {
   try {
@@ -96,49 +122,38 @@ dragArea.addEventListener('paste', (event) => {
       dragText.textContent = pTag;
       bin.style = 'display: block';
       copyText.style = 'display: block'
+      verification.hidden = false;
     }
     else{
-      alert("Invalid JSON")
-      event.preventDefault()
+      swal({
+        title: "Not JSON!",
+        text: "Make sure the credential is in JSON",
+        icon: "warning",
+      })
+        event.preventDefault()
     }
   
-
 })
 if(dragText.textContent==""){
     bin.style = 'display: none';
     copyText.style = 'display: none'
 }
-
-// file is inside drop area
+// file is inside
 dragArea.addEventListener('dragover', (event) => {
     event.preventDefault()
-    dragStatus.textContent = 'Release to Upload'
-})
-verifyArea.addEventListener('dragover', (event) => {
-  event.preventDefault()
-  dragStatus.textContent = 'Release to Upload'
+    // dragStatus.textContent = 'Release to Upload'
 })
 
-// file leaves the drag area
+// file leaves
 dragArea.addEventListener('dragleave', ()=> {
-  dragStatus.textContent = null
-})
-verifyArea.addEventListener('dragleave', ()=> {
-  dragStatus.textContent = null
+  // dragStatus.textContent = null
 })
 
 // file is dropped
 dragArea.addEventListener('drop', (event)=> {
     event.preventDefault()
     file = event.dataTransfer.files[0]
-    document.getElementById("verification").hidden = false;
     readFile()
-})
-verifyArea.addEventListener('drop', (event)=> {
-  event.preventDefault()
-  file = event.dataTransfer.files[0]
-  readFile()
-  document.getElementById("verification").hidden = false;
 })
 
 // file is copied
@@ -161,16 +176,17 @@ copyText.addEventListener("click", function() {
  
 // file is deleted
 bin.addEventListener("click", function() {
-  // dragArea.textContent=null
-  dragArea.textContent  = ""
+  // dragArea.textContent  = ""
+  window.location.reload()
+  dragArea.classList.remove('active')
   bin.style = 'display: none'
   copyText.style = 'display: none'
+  verification.hidden=true
 })
 
 
 function readFile() {
     let fileType = file.type
-
     let validExtention = ['application/json']
 
     if(validExtention.includes(fileType)){
@@ -178,25 +194,47 @@ function readFile() {
 
         fileReader.onload = () => {
             let fileData = fileReader.result
-            handleVerify(fileData)
             let formatted = JSON.stringify(JSON.parse(fileData), null, 4)            
             let pTag = `"${formatted}"`
             dragText.textContent = pTag
             bin.style = 'display: block'
             copyText.style = 'display: block'
-
             dragArea.style.removeProperty("display")
-            handleVerify(fileData)
+            verification.hidden = false;
+            setTimeout(()=>{handleVerify(fileData)},200)
+            
         }
         fileReader.readAsText(file)
+
     }else {
-        dragStatus.textContent = 'Drag & Drop JSON'
-        document.getElementById("verification").hidden = true;
+        // dragStatus.textContent = 'Drag & Drop JSON'
+        dragArea.classList.remove('active')
         swal({title:'The file is not a JSON',
               text: 'Make sure the file has a ".json" extention.',
               icon:'warning'})
     }
 }
+
+//verified results
+signBody.addEventListener('click',()=> {
+  selection("signature",1400)
+})
+
+streamBody.addEventListener('click',()=> {
+  selection("CordStream",600)
+})
+
+digestBody.addEventListener('click', ()=> {
+  selection("CordCredentialDigest",870)
+})
+
+function selection(targetWord,index){
+  const text = dragText.textContent
+  // const modifiedText = text.replace(targetWord, `<span style={{backgroundColor:"black"}}>${targetWord}</span>`);
+  let position = dragText.innerHTML.indexOf(targetWord)
+  dragArea.scrollTop = position-index
+}
+
 })
   return (
     <div className='f-screen'>
@@ -208,7 +246,6 @@ function readFile() {
       <div>
         <div className='vc-img col-md-12'>
           <img className='heading' src='vc.svg'></img>
-          {/* <h1 className='heading'>Verify Credential</h1> */}
         </div>
         <div className='bottom-contents'> 
           <div className='outer-area'>
@@ -231,22 +268,27 @@ function readFile() {
               <div className='verify-area' contentEditable='false'>
               <div id='verification' hidden>
                 <div className='col-md-12 verify-header'>
-                  <img src='verified.svg' className='verify-svg'></img>
+                  <img src='load.svg' className='verify-svg'></img>
                 </div>
-                <br></br>
-                <div className='col-md-12 verify-body'>
-                  <img className='success-svg sign'src='success.svg'></img>
+                <div className='verify-body'>
+                  <img className='success-svg sign'src='load.svg'></img>
+                  <div className='sign-body'>
                   <p>Author Signature</p>
+                  </div>
                 </div>
                 <br></br>
-                <div className='col-md-12 verify-body'>
-                  <img className='success-svg stream'src='success.svg'></img>
-                  <p>Stream</p>
+                <div className='verify-body'>
+                  <img className='success-svg stream'src='load.svg'></img>
+                  <div className='stream-body'>
+                  <p>State</p>
+                  </div>
                 </div>
                 <br></br>
-                <div className='col-md-12 verify-body'>
-                  <img className='success-svg digest'src='success.svg'></img>
-                  <p>Hash Digest</p>
+                <div className='verify-body'>
+                  <img className='success-svg digest'src='load.svg'></img>
+                  <div className='digest-body'>
+                  <p>Hash/Digest</p>
+                  </div>
                 </div>
               </div>                
               </div>

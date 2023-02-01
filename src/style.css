@@ -1,4 +1,4 @@
-  @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 
 .f-screen {
     background-color:#463B6B;
@@ -60,17 +60,24 @@ a:hover {
 
 .success-svg {
     margin-right: 30px;
+    margin-left: 20px;
     height: 25px;
     width: 25px;
 }
 .verify-body {
-    display: flex;
     flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: start;
     margin-left: 50px;
+    margin-right: 50px;
     font-size: 18px;
-    height: 55px;
+    border-radius: 10px;
 }
-
+.verify-body:hover{
+    opacity: 1;
+    background: #FFFFFF2C 0% 0% no-repeat padding-box;
+}
 .drag-area {
     width: 800px;    
     height: 349px;
@@ -211,4 +218,8 @@ pre{
     background-color: #707070;
 }
 
-  
+.sign-body, .stream-body, .digest-body {
+    margin-top: 15px;
+    cursor: pointer;
+}
+
