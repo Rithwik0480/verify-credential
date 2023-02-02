@@ -1,8 +1,7 @@
-import React, {useState, useRef, useEffect} from 'react'
+import React, {useEffect} from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import swal from 'sweetalert'
 import style from './style.css'
-import { render } from '@testing-library/react'
 
 export function handleVerify(data) {
   
@@ -82,7 +81,7 @@ const dragArea = document.querySelector('.drag-area')
 const dragText = document.querySelector('.drop-header')
 const copyText = document.querySelector('.copy')
 const bin      = document.querySelector('.bin')
-const dragStatus = document.querySelector('.drag-status')
+// const dragStatus = document.querySelector('.drag-status')
 const verification = document.getElementById("verification")
 const signBody = document.querySelector('.sign-body')
 const streamBody = document.querySelector('.stream-body')
@@ -121,7 +120,7 @@ dragArea.addEventListener('paste', (event) => {
     }
   
 })
-if(dragText.textContent==""){
+if(dragText.textContent===""){
     bin.style = 'display: none';
     copyText.style = 'display: none'
 }
@@ -240,18 +239,17 @@ let position = dragText.innerHTML.indexOf(targetWord)
 dragArea.scrollTop = position-index
 
 }
-
 })
   return (
     <div className='f-screen'>
       <div>
-      <img className='p-3' src='Group 6685.svg' />
+      <img className='p-3' src='Group 6685.svg' alt=""/>
       <a href='https://cord.network/' className='links p-3'>About CORD</a>
       <a href='https://dhiway.com/markstudio/' className='links p-3'>About #Mark Studio</a>
       </div>
       <div>
         <div className='vc-img col-md-12'>
-          <img className='heading' src='vc.svg'></img>
+          <img className='heading' src='vc.svg' alt=""></img>
         </div>
         <div className='bottom-contents'> 
           <div className='outer-area'>
@@ -259,7 +257,6 @@ dragArea.scrollTop = position-index
               <div className='col-md-12 position-relative'>
                 <p className='outer-text pe-none'>Copy paste or Drag & drop JSON</p>
                 <div className="action-buttons">
-                  {/* <i className="fa-regular fa-copy copy icons" title="copy"></i> */}
                   <i class="fa-regular fa-trash-can bin icons"></i>
                 </div>
               </div>
@@ -275,24 +272,24 @@ dragArea.scrollTop = position-index
               <div className='verify-area'>
               <div id='verification' hidden>
                 <div className='col-md-12 verify-header'>
-                  <img src='load.svg' className='verify-svg'></img>
+                  <img src='load.svg' className='verify-svg' alt=""></img>
                 </div>
                 <div className='verify-body'>
-                  <img className='success-svg sign'src='load.svg'></img>
+                  <img className='success-svg sign' src='load.svg' alt=""></img>
                   <div className='sign-body'>
                   <p>Author Signature</p>
                   </div>
                 </div>
                 <br></br>
                 <div className='verify-body'>
-                  <img className='success-svg stream'src='load.svg'></img>
+                  <img className='success-svg stream' src='load.svg' alt=""></img>
                   <div className='stream-body'>
                   <p>State</p>
                   </div>
                 </div>
                 <br></br>
                 <div className='verify-body'>
-                  <img className='success-svg digest'src='load.svg'></img>
+                  <img className='success-svg digest' src='load.svg' alt=""></img>
                   <div className='digest-body'>
                   <p>Hash/Digest</p>
                   </div>
