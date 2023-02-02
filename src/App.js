@@ -68,20 +68,6 @@ export function handleVerify(data) {
         }else {
           verify.src="verified.svg"
         }
-        // if(count === 3){
-        //     swal({
-        //         title: "Verified!",
-        //         text: "This credential has been verified",
-        //         icon: "success",
-        //     })
-        // }
-        // else{
-        //     swal({
-        //         title: "Not verified!",
-        //         text: "This credential has not been verified",
-        //         icon: "error",
-        //     })
-        // }
 
     })
 }
@@ -101,6 +87,7 @@ const verification = document.getElementById("verification")
 const signBody = document.querySelector('.sign-body')
 const streamBody = document.querySelector('.stream-body')
 const digestBody= document.querySelector('.digest-body')
+const verifyArea = document.querySelector('.verify-area')
 let file;
 
 function isJsonString(str) {
@@ -117,7 +104,7 @@ dragArea.addEventListener('paste', (event) => {
     let paste = (event.clipboardData || window.clipboardData).getData('text')
     if(isJsonString(paste)){
       let formatted = JSON.stringify(JSON.parse(paste), null, 4)             
-      let pTag = `"${formatted}"`
+      let pTag = `${formatted}`
       handleVerify(formatted)
       dragText.textContent = pTag;
       bin.style = 'display: block';
@@ -152,8 +139,14 @@ dragArea.addEventListener('dragleave', ()=> {
 // file is dropped
 dragArea.addEventListener('drop', (event)=> {
     event.preventDefault()
+
     file = event.dataTransfer.files[0]
     readFile()
+})
+verifyArea.addEventListener('drop', (event)=> {
+  event.preventDefault()
+  file = event.dataTransfer.files[0]
+  readFile()
 })
 
 // file is copied
@@ -195,7 +188,7 @@ function readFile() {
         fileReader.onload = () => {
             let fileData = fileReader.result
             let formatted = JSON.stringify(JSON.parse(fileData), null, 4)            
-            let pTag = `"${formatted}"`
+            let pTag = `${formatted}`
             dragText.textContent = pTag
             bin.style = 'display: block'
             copyText.style = 'display: block'
@@ -217,22 +210,35 @@ function readFile() {
 
 //verified results
 signBody.addEventListener('click',()=> {
-  selection("signature",1400)
+  selection("proof",600)
 })
 
 streamBody.addEventListener('click',()=> {
-  selection("CordStream",600)
+  selection("CordStreamSignature2020",400)
 })
 
 digestBody.addEventListener('click', ()=> {
-  selection("CordCredentialDigest",870)
+  selection("CordCredentialDigest2020",870)
 })
 
-function selection(targetWord,index){
-  const text = dragText.textContent
-  // const modifiedText = text.replace(targetWord, `<span style={{backgroundColor:"black"}}>${targetWord}</span>`);
-  let position = dragText.innerHTML.indexOf(targetWord)
-  dragArea.scrollTop = position-index
+function selection(targetWord,index){  
+
+let string = dragText.textContent
+let obj = JSON.parse(string);
+let proof = obj.proof[0];
+let highlightedProof = `<mark>${JSON.stringify(proof, null, 4)}</mark>`;
+let modProof=JSON.stringify(proof, null, 4)
+
+const text = dragText.innerHTML
+const modifiedText = text.replace(modProof, highlightedProof)
+
+console.log(modProof)
+console.log(highlightedProof)
+
+dragText.innerHTML=modifiedText
+let position = dragText.innerHTML.indexOf(targetWord)
+dragArea.scrollTop = position-index
+
 }
 
 })
@@ -253,7 +259,7 @@ function selection(targetWord,index){
               <div className='col-md-12 position-relative'>
                 <p className='outer-text pe-none'>Copy paste or Drag & drop JSON</p>
                 <div className="action-buttons">
-                  <i className="fa-regular fa-copy copy icons" title="copy"></i>
+                  {/* <i className="fa-regular fa-copy copy icons" title="copy"></i> */}
                   <i class="fa-regular fa-trash-can bin icons"></i>
                 </div>
               </div>
@@ -261,11 +267,12 @@ function selection(targetWord,index){
 
             <div className='inner-area'>
               <div className='drag-area' contentEditable='true'> 
-                <pre className='drop-header' contentEditable='true'>
+              <i className="fa-regular fa-copy copy icons" title="copy"></i>
+                <pre className='drop-header'>
                   <p className='drag-status'></p>
                 </pre>  
               </div>
-              <div className='verify-area' contentEditable='false'>
+              <div className='verify-area'>
               <div id='verification' hidden>
                 <div className='col-md-12 verify-header'>
                   <img src='load.svg' className='verify-svg'></img>
